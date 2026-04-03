@@ -4,6 +4,7 @@
  * URL: /pages/pet.php?id=<pet_id>
  */
 
+require_once __DIR__ . '/../config/session.php';
 require_once __DIR__ . '/../includes/pet_model.php';
 
 $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
@@ -14,9 +15,10 @@ if (!$id || $id < 1) {
 }
 
 try {
-    $pet           = getPetById($id);
-    $vaccinations  = getVaccinationsByPetId($id);
+    $pet            = getPetById($id);
+    $vaccinations   = getVaccinationsByPetId($id);
     $medicalRecords = getMedicalRecordsByPetId($id);
+    $healthNotes    = isAdminLoggedIn() ? getHealthNotesByPetId($id) : [];
 } catch (PDOException $e) {
     $dbError = 'Could not load pet data. Please ensure the database service is running.';
     $pet = false;
@@ -188,6 +190,49 @@ require_once __DIR__ . '/../includes/header.php';
                     <p class="empty-state-small">No medical records on file.</p>
                 <?php endif; ?>
             </section>
+
+            <!-- Health Notes (admin only) -->
+            <?php if (isAdminLoggedIn()): ?>
+            <section class="profile-section profile-section--admin">
+                <div class="section-heading-row">
+                    <h2 class="section-heading">🩺 Health Notes</h2>
+                    <a
+                        href="/admin/health_notes.php?pet_id=<?= (int)$pet['id'] ?>"
+                        class="btn btn--sm btn--secondary"
+                    >Manage</a>
+                </div>
+                <?php if (!empty($healthNotes)): ?>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Weight (kg)</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($healthNotes as $hn): ?>
+                            <tr>
+                                <td><?= htmlspecialchars(date('d M Y', strtotime($hn['note_date']))) ?></td>
+                                <td>
+                                    <span class="record-badge">
+                                        <?= htmlspecialchars(ucfirst(str_replace('_', ' ', $hn['type']))) ?>
+                                    </span>
+                                </td>
+                                <td><?= !empty($hn['weight_kg']) ? htmlspecialchars($hn['weight_kg']) . ' kg' : '—' ?></td>
+                                <td><?= nl2br(htmlspecialchars($hn['notes'])) ?></td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php else: ?>
+                    <p class="empty-state-small">No health notes on file.
+                        <a href="/admin/health_notes.php?pet_id=<?= (int)$pet['id'] ?>">Add one →</a>
+                    </p>
+                <?php endif; ?>
+            </section>
+            <?php endif; ?>
 
         </div><!-- /.profile-main -->
     </div><!-- /.profile-layout -->

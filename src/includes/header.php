@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/../config/session.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +11,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
+    <?php if (isAdminLoggedIn()): ?>
+    <div class="admin-bar">
+        <div class="container">
+            <span>🔑 Logged in as <strong><?= htmlspecialchars($_SESSION['admin_username']) ?></strong></span>
+            <div class="admin-bar__links">
+                <a href="/admin/">Dashboard</a>
+                <a href="/admin/logout.php">Log out</a>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
     <header class="site-header">
         <div class="container">
             <a href="/" class="site-logo">
@@ -17,6 +29,9 @@
             </a>
             <nav class="site-nav">
                 <a href="/">Home</a>
+                <?php if (!isAdminLoggedIn()): ?>
+                    <a href="/admin/login.php">Admin</a>
+                <?php endif; ?>
             </nav>
         </div>
     </header>
