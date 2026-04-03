@@ -16,11 +16,11 @@ A PHP web application for managing pet profiles, built for Jack-Jack and Nagi �
 
 - 🏠 **Homepage** – gallery-style cards for every pet
 - 🐕 **Individual pet profiles** – full details including breed, age, weight, colour, favourite toy & food
-- 💉 **Vaccination history** – per-pet vaccine records
-- 🏥 **Medical records** – visit history with vet notes
+- ⚠️ **Important Note** – highlighted section for key information (allergies, behaviour notes, microchip info)
+- 📸 **Photo gallery** – additional photos on the full profile page
 - 🔒 **Admin panel** – password-protected login to manage health notes per pet
 - 🩺 **Health notes** – injection, physio, fleaing, vet visit, medication records (admin-only)
-- 📱 **Responsive design** – works on mobile and desktop
+- 📱 **Responsive design** – fully optimised for mobile and desktop
 
 ## Local Development
 
@@ -47,10 +47,11 @@ Log in to MySQL and run the init script to create the schema and seed Jack-Jack 
 mysql -u root -p < sql/init.sql
 ```
 
-Then run the migration to add the admin and health notes tables:
+Then run the migrations in order:
 
 ```bash
 mysql -u root -p < sql/migrations/add_admin_and_health_notes.sql
+mysql -u root -p < sql/migrations/add_important_note_and_gallery.sql
 ```
 
 Or open both files in phpMyAdmin / MySQL Workbench and execute them in order.
@@ -115,7 +116,7 @@ This app uses PHP 8.0 features (union return types etc.).
 2. **Select your database** in the left panel (click its name).
 3. Click the **SQL** tab and run the schema without the `CREATE DATABASE`/`USE` lines:
    - Open `sql/init.sql`, copy everything **after** the `USE` line, paste into the SQL box, and execute.
-4. Repeat for `sql/migrations/add_admin_and_health_notes.sql` – this file has no `USE` line, so you can import it directly via the **Import** tab.
+4. Repeat for `sql/migrations/add_admin_and_health_notes.sql` and `sql/migrations/add_important_note_and_gallery.sql` – these files have no `USE` line, so you can import them directly via the **Import** tab.
 
 **Option B – MySQL CLI via SSH**
 
@@ -123,6 +124,7 @@ This app uses PHP 8.0 features (union return types etc.).
 # Replace dbs12345678, dbuser, dbpass with your IONOS values
 mysql -h localhost -u dbuser -pdbpass dbs12345678 < sql/init_tables_only.sql
 mysql -h localhost -u dbuser -pdbpass dbs12345678 < sql/migrations/add_admin_and_health_notes.sql
+mysql -h localhost -u dbuser -pdbpass dbs12345678 < sql/migrations/add_important_note_and_gallery.sql
 ```
 
 > The `CREATE DATABASE` and `USE` lines in `init.sql` are harmless with CLI when you pass the database name as an argument – MySQL ignores the `USE` and the `CREATE DATABASE IF NOT EXISTS` will simply fail silently on permission-denied, which is fine since the database already exists.
@@ -225,7 +227,8 @@ Use it to:
 ├── sql/
 │   ├── init.sql              # Base schema + seed data (Jack-Jack & Nagi)
 │   └── migrations/
-│       └── add_admin_and_health_notes.sql  # Admin users + health notes tables
+│       ├── add_admin_and_health_notes.sql          # Admin users + health notes tables
+│       └── add_important_note_and_gallery.sql      # Important note column + pet gallery photos
 └── src/                      # Upload the contents of this folder to your IONOS document root
     ├── index.php             # Homepage – pet card gallery
     ├── .htaccess             # Apache rewrite rules (used on IONOS; router.php handles this locally)
@@ -249,6 +252,7 @@ Use it to:
     │   └── health_note_delete.php# POST: delete a health note
     └── assets/
         ├── css/style.css         # Main stylesheet (includes admin styles)
+        ├── images/               # Local pet photos (see Pet Images section below)
         └── js/app.js             # Minimal JavaScript
 ```
 
@@ -260,15 +264,11 @@ pets
  ├── birthday, weight_kg, color
  ├── description, personality
  ├── favourite_toy, favourite_food
- └── photo_url, created_at, updated_at
+ └── photo_url, important_note, created_at, updated_at
 
-vaccinations
+pet_photos                         ← added by migration
  └── pet_id → pets.id
-     vaccine_name, date_given, next_due_date, vet_name, notes
-
-medical_records
- └── pet_id → pets.id
-     record_date, record_type, description, vet_name, notes
+     photo_url, caption, display_order
 
 admin_users                        ← added by migration
  └── id, username, password_hash, created_at
@@ -279,3 +279,18 @@ health_notes                       ← added by migration
      type: injection | physio | fleaing | vet_visit | medication | other
      notes, created_at, updated_at
 ```
+
+## Pet Images
+
+Place pet photos in `src/assets/images/` using the following filenames:
+
+| File | Purpose |
+|------|---------|
+| `jack-jack.jpg` | Jack-Jack's main profile photo |
+| `jack-jack-2.jpg` | Jack-Jack gallery photo |
+| `jack-jack-3.jpg` | Jack-Jack gallery photo |
+| `nagi.jpg` | Nagi's main profile photo |
+| `nagi-2.jpg` | Nagi gallery photo |
+| `nagi-3.jpg` | Nagi gallery photo |
+
+Recommended size: **800 × 800 px**, JPEG format.
