@@ -1,8 +1,11 @@
 -- Migration: Add admin_users and health_notes tables
--- Run after sql/init.sql has been executed.
--- MySQL 8.0
-
-USE `pet_profiles`;
+-- Run after the base schema (sql/init.sql) has been applied.
+-- Compatible with MySQL 5.7+ and MariaDB.
+--
+-- ⚠️  IONOS / shared hosting: Do NOT include a USE statement here.
+-- In phpMyAdmin, select your database first, then import this file.
+-- The database name assigned by IONOS (e.g. dbs12345678) is already
+-- active in that context; a USE statement would fail.
 
 -- Admin users table
 CREATE TABLE IF NOT EXISTS `admin_users` (

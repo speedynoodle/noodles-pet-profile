@@ -2,15 +2,52 @@
 /**
  * CLI script to create an admin user.
  *
- * Usage (run from the project root):
+ * LOCAL DEVELOPMENT (run from the project root):
  *   php scripts/create_admin.php
+ *
+ * IONOS / SHARED HOSTING via SSH:
+ *   The src/ directory is uploaded to httpdocs/ on the server, so the
+ *   database.php config lives at a different relative path.  Pass the
+ *   path explicitly:
+ *
+ *   php create_admin.php --db-config=/path/to/httpdocs/config/database.php
+ *
+ *   Example (typical IONOS home directory layout):
+ *   php ~/create_admin.php --db-config=~/httpdocs/config/database.php
+ *
+ * ALTERNATIVE – phpMyAdmin:
+ *   If you don't have SSH access you can insert an admin user directly
+ *   in phpMyAdmin.  Run the following query (replace the values):
+ *
+ *   INSERT INTO admin_users (username, password_hash)
+ *   VALUES ('admin', '$2y$12$...');   -- generate hash with php -r "echo password_hash('yourpassword', PASSWORD_BCRYPT);"
  */
 
 if (PHP_SAPI !== 'cli') {
     exit('This script must be run from the command line.' . PHP_EOL);
 }
 
-require_once __DIR__ . '/../src/config/database.php';
+// Parse optional --db-config= argument
+$dbConfigPath = null;
+foreach ($argv as $arg) {
+    if (str_starts_with($arg, '--db-config=')) {
+        $dbConfigPath = substr($arg, strlen('--db-config='));
+        break;
+    }
+}
+
+if ($dbConfigPath === null) {
+    // Default: project root structure (local dev)
+    $dbConfigPath = __DIR__ . '/../src/config/database.php';
+}
+
+if (!file_exists($dbConfigPath)) {
+    fwrite(STDERR, "Error: database config not found at '{$dbConfigPath}'.\n");
+    fwrite(STDERR, "Use --db-config=/path/to/database.php to specify the location.\n");
+    exit(1);
+}
+
+require_once $dbConfigPath;
 
 // Prompt for username
 fwrite(STDOUT, 'Enter admin username: ');
