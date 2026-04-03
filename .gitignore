@@ -1,8 +1,5 @@
-# Environment file with secrets – never commit
-.env
-
-# Docker volumes and data
-db_data/
+# Database config contains credentials – never commit the live version
+src/config/database.php
 
 # OS artefacts
 .DS_Store
