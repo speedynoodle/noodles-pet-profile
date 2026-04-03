@@ -491,9 +491,236 @@ a:hover { text-decoration: underline; }
 }
 
 /* =========================================================
-   Admin Styles
+   Sitter Information Page Styles
    ========================================================= */
 
+.sitter-page {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* ----- Sitter Hero ----- */
+.sitter-hero {
+    text-align: center;
+    padding: 1.5rem 1rem 1rem;
+    position: relative;
+}
+
+.sitter-hero__title {
+    font-size: clamp(1.8rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: var(--color-primary);
+    line-height: 1.2;
+    margin-bottom: .4rem;
+}
+
+.sitter-hero__subtitle {
+    font-size: 1.05rem;
+    color: var(--color-text-muted);
+    margin-bottom: .75rem;
+}
+
+.sitter-hero__edit {
+    display: inline-block;
+    margin-top: .25rem;
+}
+
+/* ----- Sitter Cards Grid ----- */
+.sitter-grid {
+    display: grid;
+    gap: 1.25rem;
+}
+
+.sitter-grid--2 {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.sitter-grid--walks {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+
+/* ----- Contact Cards ----- */
+.sitter-card {
+    background: var(--color-surface);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.4rem 1.5rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.sitter-card--highlight {
+    border-color: var(--color-primary);
+    background: #fff8f2;
+}
+
+.sitter-card__heading {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--color-primary);
+    margin-bottom: .75rem;
+    padding-bottom: .4rem;
+    border-bottom: 2px solid var(--color-accent);
+}
+
+.sitter-contact__name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: .4rem;
+}
+
+.sitter-contact__phone {
+    display: inline-block;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: .3rem;
+}
+
+.sitter-contact__address {
+    font-size: .9rem;
+    color: var(--color-text-muted);
+    margin-top: .4rem;
+}
+
+/* ----- Sitter Sections ----- */
+.sitter-section {
+    background: var(--color-surface);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem 1.75rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.sitter-section__heading {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--color-primary);
+    margin-bottom: .5rem;
+    padding-bottom: .5rem;
+    border-bottom: 2px solid var(--color-accent);
+}
+
+.sitter-section__intro {
+    font-size: .95rem;
+    color: var(--color-text-muted);
+    margin-bottom: 1rem;
+}
+
+/* ----- Walk / Feed Cards ----- */
+.sitter-walk-card {
+    background: var(--color-bg);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 1.1rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: .3rem;
+}
+
+.sitter-walk-card__label {
+    font-weight: 800;
+    font-size: .95rem;
+    color: var(--color-text);
+}
+
+.sitter-walk-card__time {
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: var(--color-primary);
+    line-height: 1.1;
+}
+
+.sitter-walk-card__duration {
+    font-size: .85rem;
+    color: var(--color-text-muted);
+    font-weight: 600;
+}
+
+.sitter-walk-card__food {
+    font-size: .92rem;
+    font-weight: 700;
+    color: var(--color-text);
+}
+
+.sitter-walk-card__notes {
+    font-size: .85rem;
+    color: var(--color-text-muted);
+    margin-top: .2rem;
+    line-height: 1.5;
+}
+
+/* ----- Per-pet header inside section ----- */
+.sitter-pet-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: .75rem;
+    border-bottom: 2px solid var(--color-accent);
+}
+
+.sitter-pet-header__photo {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    flex-shrink: 0;
+    border: 2px solid var(--color-border);
+}
+
+.sitter-pet-header__name {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--color-primary);
+    line-height: 1.1;
+}
+
+.sitter-pet-header__breed {
+    font-size: .9rem;
+    color: var(--color-text-muted);
+    font-weight: 600;
+    margin-top: .2rem;
+}
+
+.sitter-subsection__heading {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--color-text);
+    margin: 1.25rem 0 .75rem;
+}
+
+.sitter-pet-notes {
+    font-size: .92rem;
+    color: var(--color-text);
+    line-height: 1.65;
+    background: var(--color-bg);
+    border-radius: var(--radius-sm);
+    padding: .85rem 1rem;
+    border-left: 3px solid var(--color-accent);
+}
+
+.sitter-general-notes {
+    font-size: .92rem;
+    color: var(--color-text);
+    line-height: 1.7;
+    background: var(--color-bg);
+    border-radius: var(--radius-sm);
+    padding: .85rem 1rem;
+}
+
+/* ----- Responsive sitter ----- */
+@media (max-width: 600px) {
+    .sitter-grid--2,
+    .sitter-grid--walks {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =========================================================
+   Admin Styles
+   ========================================================= */
 /* ----- Admin Bar (top banner when logged in) ----- */
 .admin-bar {
     background: var(--color-text);
