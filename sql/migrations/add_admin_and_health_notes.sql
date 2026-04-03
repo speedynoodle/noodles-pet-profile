@@ -1,6 +1,6 @@
 -- Migration: Add admin_users and health_notes tables
 -- Run after the base schema (sql/init.sql) has been applied.
--- Compatible with MySQL 5.7+ and MariaDB.
+-- MySQL 8.0
 --
 -- ⚠️  IONOS / shared hosting: Do NOT include a USE statement here.
 -- In phpMyAdmin, select your database first, then import this file.

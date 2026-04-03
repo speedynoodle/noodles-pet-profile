@@ -8,7 +8,7 @@ A PHP web application for managing pet profiles, built for Jack-Jack and Nagi â€
 |------------|-----------------------------------|
 | Web server | Apache 2 + PHP 8.x                |
 | Framework  | Vanilla PHP (MVC-style structure) |
-| Database   | MySQL 5.7+ / MariaDB              |
+| Database   | MySQL 8.0                         |
 | DB Admin   | phpMyAdmin (via IONOS Control Panel) |
 | Hosting    | IONOS Web Hosting Plus            |
 
@@ -30,7 +30,7 @@ A PHP web application for managing pet profiles, built for Jack-Jack and Nagi â€
   - macOS: [Laravel Herd](https://herd.laravel.com/) (recommended), Homebrew PHP, or MAMP
   - Windows: [Laragon](https://laragon.org/) or XAMPP
   - Linux: `sudo apt install php php-mysql` (or distro equivalent)
-- **MySQL 5.7+ or MariaDB** (usually bundled with the tools above, or install via Homebrew / `apt`)
+- **MySQL 8.0** (usually bundled with the tools above, or install via Homebrew / `apt`)
 
 ### 1 â€“ Clone the repository
 

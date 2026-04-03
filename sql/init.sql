@@ -1,5 +1,5 @@
 -- Pet Profiles Database Initialization
--- Compatible with MySQL 5.7+ and MariaDB.
+-- MySQL 8.0
 --
 -- ⚠️  IONOS / shared hosting – READ BEFORE IMPORTING:
 --   The two lines below (CREATE DATABASE … and USE …) are for
