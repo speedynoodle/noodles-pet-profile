@@ -1,5 +1,16 @@
 -- Pet Profiles Database Initialization
 -- MySQL 8.0
+--
+-- ⚠️  IONOS / shared hosting – READ BEFORE IMPORTING:
+--   The two lines below (CREATE DATABASE … and USE …) are for
+--   LOCAL development only.  On IONOS (or any host where your database
+--   already exists and your DB user lacks CREATE DATABASE privilege):
+--     1. Select your database in phpMyAdmin first.
+--     2. Delete or comment out the CREATE DATABASE and USE lines below.
+--     3. Then click Import.
+--
+-- Local development: leave the lines as-is and run:
+--   mysql -u root -p < sql/init.sql
 
 CREATE DATABASE IF NOT EXISTS `pet_profiles`
     CHARACTER SET utf8mb4
