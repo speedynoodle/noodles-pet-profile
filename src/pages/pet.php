@@ -15,10 +15,9 @@ if (!$id || $id < 1) {
 }
 
 try {
-    $pet            = getPetById($id);
-    $vaccinations   = getVaccinationsByPetId($id);
-    $medicalRecords = getMedicalRecordsByPetId($id);
-    $healthNotes    = isAdminLoggedIn() ? getHealthNotesByPetId($id) : [];
+    $pet          = getPetById($id);
+    $galleryPhotos = getGalleryPhotosByPetId($id);
+    $healthNotes  = isAdminLoggedIn() ? getHealthNotesByPetId($id) : [];
 } catch (PDOException $e) {
     $dbError = 'Could not load pet data. Please ensure the database service is running.';
     $pet = false;
@@ -108,7 +107,7 @@ require_once __DIR__ . '/../includes/header.php';
             </div>
         </aside>
 
-        <!-- Right column: description, personality, records -->
+        <!-- Right column: description, personality, important note, gallery, admin notes -->
         <div class="profile-main">
 
             <?php if (!empty($pet['description'])): ?>
@@ -125,71 +124,35 @@ require_once __DIR__ . '/../includes/header.php';
             </section>
             <?php endif; ?>
 
-            <!-- Vaccinations -->
-            <section class="profile-section">
-                <h2 class="section-heading">💉 Vaccination History</h2>
-                <?php if (!empty($vaccinations)): ?>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Vaccine</th>
-                                <th>Date Given</th>
-                                <th>Next Due</th>
-                                <th>Vet</th>
-                                <th>Notes</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($vaccinations as $v): ?>
-                            <tr>
-                                <td><?= htmlspecialchars($v['vaccine_name']) ?></td>
-                                <td><?= htmlspecialchars(date('d M Y', strtotime($v['date_given']))) ?></td>
-                                <td>
-                                    <?= !empty($v['next_due_date'])
-                                        ? htmlspecialchars(date('d M Y', strtotime($v['next_due_date'])))
-                                        : '—' ?>
-                                </td>
-                                <td><?= !empty($v['vet_name']) ? htmlspecialchars($v['vet_name']) : '—' ?></td>
-                                <td><?= !empty($v['notes']) ? htmlspecialchars($v['notes']) : '—' ?></td>
-                            </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                <?php else: ?>
-                    <p class="empty-state-small">No vaccination records on file.</p>
-                <?php endif; ?>
+            <!-- Important Note -->
+            <?php if (!empty($pet['important_note'])): ?>
+            <section class="profile-section profile-section--important">
+                <h2 class="section-heading section-heading--important">⚠️ Important Note</h2>
+                <p class="important-note-text"><?= nl2br(htmlspecialchars($pet['important_note'])) ?></p>
             </section>
+            <?php endif; ?>
 
-            <!-- Medical Records -->
+            <!-- Photo Gallery -->
+            <?php if (!empty($galleryPhotos)): ?>
             <section class="profile-section">
-                <h2 class="section-heading">🏥 Medical Records</h2>
-                <?php if (!empty($medicalRecords)): ?>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                                <th>Vet</th>
-                                <th>Notes</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($medicalRecords as $r): ?>
-                            <tr>
-                                <td><?= htmlspecialchars(date('d M Y', strtotime($r['record_date']))) ?></td>
-                                <td><span class="record-badge"><?= htmlspecialchars($r['record_type']) ?></span></td>
-                                <td><?= !empty($r['description']) ? htmlspecialchars($r['description']) : '—' ?></td>
-                                <td><?= !empty($r['vet_name']) ? htmlspecialchars($r['vet_name']) : '—' ?></td>
-                                <td><?= !empty($r['notes']) ? htmlspecialchars($r['notes']) : '—' ?></td>
-                            </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                <?php else: ?>
-                    <p class="empty-state-small">No medical records on file.</p>
-                <?php endif; ?>
+                <h2 class="section-heading">📸 Photo Gallery</h2>
+                <div class="photo-gallery">
+                    <?php foreach ($galleryPhotos as $photo): ?>
+                    <figure class="gallery-item">
+                        <img
+                            src="<?= htmlspecialchars($photo['photo_url']) ?>"
+                            alt="<?= !empty($photo['caption']) ? htmlspecialchars($photo['caption']) : 'Photo of ' . htmlspecialchars($pet['name']) ?>"
+                            class="gallery-photo"
+                            loading="lazy"
+                        >
+                        <?php if (!empty($photo['caption'])): ?>
+                        <figcaption class="gallery-caption"><?= htmlspecialchars($photo['caption']) ?></figcaption>
+                        <?php endif; ?>
+                    </figure>
+                    <?php endforeach; ?>
+                </div>
             </section>
+            <?php endif; ?>
 
             <!-- Health Notes (admin only) -->
             <?php if (isAdminLoggedIn()): ?>

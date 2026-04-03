@@ -27,6 +27,19 @@ function getPetById(int $id): array|false
 }
 
 /**
+ * Fetch gallery photos for a pet, ordered by display_order.
+ */
+function getGalleryPhotosByPetId(int $petId): array
+{
+    $pdo  = getDbConnection();
+    $stmt = $pdo->prepare(
+        'SELECT * FROM pet_photos WHERE pet_id = :pet_id ORDER BY display_order ASC, id ASC'
+    );
+    $stmt->execute([':pet_id' => $petId]);
+    return $stmt->fetchAll();
+}
+
+/**
  * Fetch vaccinations for a pet.
  */
 function getVaccinationsByPetId(int $petId): array
