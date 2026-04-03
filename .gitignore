@@ -1,0 +1,12 @@
+# Database config contains credentials – never commit the live version
+src/config/database.php
+
+# OS artefacts
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
