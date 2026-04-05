@@ -110,6 +110,21 @@ a:hover { text-decoration: underline; }
     font-size: .92rem;
 }
 
+.footer-admin-link {
+    margin-top: .4rem;
+    font-size: .82rem;
+    opacity: .7;
+}
+
+.footer-admin-link a {
+    color: var(--color-text-muted);
+    font-weight: 600;
+}
+
+.footer-admin-link a:hover {
+    color: var(--color-primary);
+}
+
 /* ----- Hero Section ----- */
 .hero {
     text-align: center;
@@ -170,7 +185,26 @@ a:hover { text-decoration: underline; }
     transform: scale(1.04);
 }
 
-.pet-card__image--placeholder {
+.pet-card__link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.pet-card__link:hover {
+    text-decoration: none;
+}
+
+.pet-card__name-link {
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+.pet-card__name-link:hover {
+    text-decoration: underline;
+}
+
+
     display: flex;
     align-items: center;
     justify-content: center;
