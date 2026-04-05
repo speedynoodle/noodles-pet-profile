@@ -101,6 +101,32 @@ require_once __DIR__ . '/../includes/header.php';
     </div>
     <?php endif; ?>
 
+    <!-- General Notes -->
+    <?php if ($householdInfo && !empty($householdInfo['general_notes'])): ?>
+    <section class="sitter-section">
+        <h2 class="sitter-section__heading">📋 General Notes</h2>
+        <?php
+            $lines = explode("\n", $householdInfo['general_notes']);
+            $output = '';
+            $inList = false;
+            foreach ($lines as $line) {
+                $trimmed = trim($line);
+                if (preg_match('/^[-*]\s+(.+)/', $trimmed, $m)) {
+                    if (!$inList) { $output .= '<ul class="sitter-notes-list">'; $inList = true; }
+                    $output .= '<li>' . htmlspecialchars(trim($m[1])) . '</li>';
+                } else {
+                    if ($inList) { $output .= '</ul>'; $inList = false; }
+                    if ($trimmed !== '') {
+                        $output .= '<p class="sitter-general-notes">' . nl2br(htmlspecialchars($trimmed)) . '</p>';
+                    }
+                }
+            }
+            if ($inList) { $output .= '</ul>'; }
+            echo $output;
+        ?>
+    </section>
+    <?php endif; ?>
+
     <!-- Walk Schedule (household-wide) -->
     <section class="sitter-section">
         <h2 class="sitter-section__heading">🦮 Walk Schedule</h2>
@@ -183,32 +209,6 @@ require_once __DIR__ . '/../includes/header.php';
 
     </section>
     <?php endforeach; ?>
-
-    <!-- General Notes -->
-    <?php if ($householdInfo && !empty($householdInfo['general_notes'])): ?>
-    <section class="sitter-section">
-        <h2 class="sitter-section__heading">📋 General Notes</h2>
-        <?php
-            $lines = explode("\n", $householdInfo['general_notes']);
-            $output = '';
-            $inList = false;
-            foreach ($lines as $line) {
-                $trimmed = trim($line);
-                if (preg_match('/^[-*]\s+(.+)/', $trimmed, $m)) {
-                    if (!$inList) { $output .= '<ul class="sitter-notes-list">'; $inList = true; }
-                    $output .= '<li>' . htmlspecialchars(trim($m[1])) . '</li>';
-                } else {
-                    if ($inList) { $output .= '</ul>'; $inList = false; }
-                    if ($trimmed !== '') {
-                        $output .= '<p class="sitter-general-notes">' . nl2br(htmlspecialchars($trimmed)) . '</p>';
-                    }
-                }
-            }
-            if ($inList) { $output .= '</ul>'; }
-            echo $output;
-        ?>
-    </section>
-    <?php endif; ?>
 
 </div><!-- /.sitter-page -->
 
