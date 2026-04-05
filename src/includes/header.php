@@ -29,11 +29,11 @@
             </a>
             <nav class="site-nav">
                 <a href="/">Home</a>
+                <a href="/pages/sitter.php">Sitter Info</a>
                 <?php if (!isAdminLoggedIn()): ?>
                     <a href="/admin/login.php">Admin</a>
                 <?php endif; ?>
-            </nav>
-        </div>
+            </nav>        </div>
     </header>
     <main class="site-main">
         <div class="container">
