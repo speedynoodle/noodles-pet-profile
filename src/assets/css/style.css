@@ -521,9 +521,12 @@ a:hover { text-decoration: underline; }
     margin-bottom: .75rem;
 }
 
-.sitter-hero__edit {
-    display: inline-block;
-    margin-top: .25rem;
+.sitter-hero__actions {
+    display: flex;
+    gap: .6rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: .5rem;
 }
 
 /* ----- Sitter Cards Grid ----- */

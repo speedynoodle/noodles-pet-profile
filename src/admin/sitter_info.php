@@ -48,6 +48,81 @@ require_once __DIR__ . '/../includes/header.php';
     <a href="/pages/sitter.php" class="btn btn--secondary btn--sm">👁 View Sitter Page</a>
 </div>
 
+<?php if (isset($_GET['code_saved'])): ?>
+    <div class="alert alert-success" style="margin-bottom:1.25rem">✔ Sitter access code updated successfully.</div>
+<?php elseif (isset($_GET['code_error'])): ?>
+    <div class="alert alert-error" style="margin-bottom:1.25rem">The codes did not match. Please try again.</div>
+<?php endif; ?>
+
+<!-- ======================================================
+     0. Sitter Access Code
+     ====================================================== -->
+<div class="admin-section admin-form-section">
+    <h2 class="section-heading">🔑 Sitter Access Code</h2>
+    <p style="font-size:.9rem;color:var(--color-text-muted);margin-bottom:1rem">
+        <?php if (!empty($householdInfo['sitter_access_code_hash'])): ?>
+            <span style="color:var(--color-success);font-weight:700">✔ An access code is currently set.</span>
+            Sitters must enter this code to view the sitter information page.
+        <?php else: ?>
+            <span style="color:var(--color-error);font-weight:700">⚠ No access code is set.</span>
+            Sitters who visit the page will see an error asking them to contact the owner. Set a code below to grant access.
+        <?php endif; ?>
+    </p>
+    <form method="post" action="/admin/sitter_access_code_save.php">
+        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(getCsrfToken()) ?>">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="new_access_code" class="form-label">
+                    <?= !empty($householdInfo['sitter_access_code_hash']) ? 'New Access Code' : 'Set Access Code' ?>
+                    <span class="form-required">*</span>
+                </label>
+                <input
+                    type="password"
+                    id="new_access_code"
+                    name="new_access_code"
+                    class="form-input"
+                    required
+                    autocomplete="new-password"
+                    placeholder="Enter a code for your sitter"
+                    style="max-width:300px"
+                >
+            </div>
+            <div class="form-group">
+                <label for="confirm_access_code" class="form-label">
+                    Confirm Code <span class="form-required">*</span>
+                </label>
+                <input
+                    type="password"
+                    id="confirm_access_code"
+                    name="confirm_access_code"
+                    class="form-input"
+                    required
+                    autocomplete="new-password"
+                    placeholder="Re-enter the code"
+                    style="max-width:300px"
+                >
+            </div>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn--primary">
+                <?= !empty($householdInfo['sitter_access_code_hash']) ? 'Change Code' : 'Set Code' ?>
+            </button>
+        </div>
+    </form>
+    <?php if (!empty($householdInfo['sitter_access_code_hash'])): ?>
+    <form
+        method="post"
+        action="/admin/sitter_access_code_save.php"
+        onsubmit="return confirm('Are you sure? This will remove the access code and make the sitter page inaccessible until a new one is set.')"
+        style="margin-top:.75rem"
+    >
+        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(getCsrfToken()) ?>">
+        <input type="hidden" name="remove_code" value="1">
+        <button type="submit" class="btn btn--sm btn--danger">Remove Access Code</button>
+    </form>
+    <?php endif; ?>
+</div>
+
 <!-- ======================================================
      1. Household Info
      ====================================================== -->
@@ -55,7 +130,6 @@ require_once __DIR__ . '/../includes/header.php';
     <h2 class="section-heading">🆘 Emergency Contact &amp; Vet Info</h2>
     <form method="post" action="/admin/sitter_info_save.php">
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(getCsrfToken()) ?>">
-
         <div class="form-row">
             <div class="form-group">
                 <label for="emergency_contact_name" class="form-label">Emergency Contact Name</label>

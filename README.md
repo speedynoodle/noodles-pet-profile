@@ -53,9 +53,10 @@ Then run the migrations to add the admin/health-notes tables and the sitter-info
 ```bash
 mysql -u root -p < sql/migrations/add_admin_and_health_notes.sql
 mysql -u root -p < sql/migrations/add_sitter_info.sql
+mysql -u root -p < sql/migrations/add_sitter_access_code.sql
 ```
 
-Or open both files in phpMyAdmin / MySQL Workbench and execute them in order.
+Or open all files in phpMyAdmin / MySQL Workbench and execute them in order.
 
 ### 3 – Configure the database connection
 

@@ -1,14 +1,22 @@
 <?php
 /**
- * Public Sitter Information page.
+ * Sitter Information page – access-code protected.
  * URL: /pages/sitter.php
  *
  * Displays household walk schedule, emergency contacts, vet info,
  * per-pet feeding schedules and sitter notes in an easily readable format.
+ * Requires either an active sitter session (via /pages/sitter_login.php)
+ * or an active admin session.
  */
 
 require_once __DIR__ . '/../config/session.php';
 require_once __DIR__ . '/../includes/pet_model.php';
+
+// Grant access to admins and authenticated sitters; everyone else hits the login page
+if (!isAdminLoggedIn() && !isSitterLoggedIn()) {
+    header('Location: /pages/sitter_login.php');
+    exit;
+}
 
 try {
     $householdInfo  = getHouseholdSitterInfo();
@@ -39,11 +47,18 @@ require_once __DIR__ . '/../includes/header.php';
     <div class="sitter-hero">
         <h1 class="sitter-hero__title">🏠 Sitter Information</h1>
         <p class="sitter-hero__subtitle">Everything you need to know to look after our pets</p>
-        <?php if (isAdminLoggedIn()): ?>
-            <a href="/admin/sitter_info.php" class="btn btn--secondary btn--sm sitter-hero__edit">
-                ✏️ Edit Sitter Info
-            </a>
-        <?php endif; ?>
+        <div class="sitter-hero__actions">
+            <?php if (isAdminLoggedIn()): ?>
+                <a href="/admin/sitter_info.php" class="btn btn--secondary btn--sm">
+                    ✏️ Edit Sitter Info
+                </a>
+            <?php endif; ?>
+            <?php if (isSitterLoggedIn()): ?>
+                <a href="/pages/sitter_logout.php" class="btn btn--secondary btn--sm">
+                    🔒 Log Out
+                </a>
+            <?php endif; ?>
+        </div>
     </div>
 
     <!-- Emergency contacts & vet info -->

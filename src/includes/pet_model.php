@@ -172,6 +172,23 @@ function saveHouseholdSitterInfo(array $data): void
 }
 
 /**
+ * Set (or update) the sitter access code hash for the household row.
+ * Pass null to remove the access code (making the sitter page publicly accessible again).
+ */
+function saveSitterAccessCode(?string $hash): void
+{
+    $pdo  = getDbConnection();
+    // Ensure the row exists first
+    $pdo->exec(
+        'INSERT IGNORE INTO sitter_household_info (id) VALUES (1)'
+    );
+    $stmt = $pdo->prepare(
+        'UPDATE sitter_household_info SET sitter_access_code_hash = :hash WHERE id = 1'
+    );
+    $stmt->execute([':hash' => $hash]);
+}
+
+/**
  * Fetch all walk schedule entries ordered by sort_order then id.
  */
 function getAllWalkSchedules(): array
