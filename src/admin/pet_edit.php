@@ -185,12 +185,12 @@ require_once __DIR__ . '/../includes/header.php';
                 Photo URL <span class="form-optional">optional</span>
             </label>
             <input
-                type="url"
+                type="text"
                 id="photo_url"
                 name="photo_url"
                 class="form-input"
                 maxlength="500"
-                placeholder="https://…"
+                placeholder="https://… or /assets/images/…"
                 value="<?= htmlspecialchars($pet['photo_url'] ?? '') ?>"
             >
         </div>
@@ -207,20 +207,6 @@ require_once __DIR__ . '/../includes/header.php';
                 rows="4"
                 placeholder="Tell us about this pet…"
             ><?= htmlspecialchars($pet['description'] ?? '') ?></textarea>
-        </div>
-
-        <!-- Personality -->
-        <div class="form-group">
-            <label for="personality" class="form-label">
-                Personality <span class="form-optional">optional</span>
-            </label>
-            <textarea
-                id="personality"
-                name="personality"
-                class="form-input form-textarea"
-                rows="3"
-                placeholder="Describe their personality…"
-            ><?= htmlspecialchars($pet['personality'] ?? '') ?></textarea>
         </div>
 
         <div class="form-actions">
