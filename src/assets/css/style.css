@@ -1165,3 +1165,53 @@ a:hover { text-decoration: underline; }
         margin-bottom: 1rem;
     }
 }
+
+/* ----- Mobile header / nav improvements ----- */
+@media (max-width: 600px) {
+    /* Stack logo above nav */
+    .site-header .container {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        padding-top: 14px;
+        padding-bottom: 14px;
+    }
+
+    /* Center logo */
+    .site-logo {
+        text-align: center;
+        font-size: 1.6rem;
+        line-height: 1.2;
+    }
+
+    /* 2-column pill button grid */
+    .site-nav {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .site-nav a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 44px;
+        padding: 10px 12px;
+        border-radius: 14px;
+        font-weight: 700;
+        font-size: 1rem;
+        background: rgba(0, 0, 0, 0.04);
+        color: var(--color-text-muted);
+    }
+
+    .site-nav a:hover {
+        background: var(--color-accent);
+        color: var(--color-primary-dk);
+    }
+
+    /* Active page pill */
+    .site-nav a[aria-current="page"] {
+        background: var(--color-accent);
+        color: var(--color-primary-dk);
+    }
+}
