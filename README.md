@@ -18,7 +18,8 @@ A PHP web application for managing pet profiles, built for Jack-Jack and Nagi �
 - 🐕 **Individual pet profiles** – full details including breed, age, weight, colour, favourite toy & food
 - 💉 **Vaccination history** – per-pet vaccine records
 - 🏥 **Medical records** – visit history with vet notes
-- 🔒 **Admin panel** – password-protected login to manage health notes per pet
+- 🦮 **Sitter Information** – public page with walk schedule, per-pet feeding schedules, emergency contacts and vet info
+- 🔒 **Admin panel** – password-protected login to manage health notes and sitter information per pet
 - 🩺 **Health notes** – injection, physio, fleaing, vet visit, medication records (admin-only)
 - 📱 **Responsive design** – works on mobile and desktop
 
@@ -47,13 +48,15 @@ Log in to MySQL and run the init script to create the schema and seed Jack-Jack 
 mysql -u root -p < sql/init.sql
 ```
 
-Then run the migration to add the admin and health notes tables:
+Then run the migrations to add the admin/health-notes tables and the sitter-information tables:
 
 ```bash
 mysql -u root -p < sql/migrations/add_admin_and_health_notes.sql
+mysql -u root -p < sql/migrations/add_sitter_info.sql
+mysql -u root -p < sql/migrations/add_sitter_access_code.sql
 ```
 
-Or open both files in phpMyAdmin / MySQL Workbench and execute them in order.
+Or open all files in phpMyAdmin / MySQL Workbench and execute them in order.
 
 ### 3 – Configure the database connection
 
@@ -116,6 +119,7 @@ This app uses PHP 8.0 features (union return types etc.).
 3. Click the **SQL** tab and run the schema without the `CREATE DATABASE`/`USE` lines:
    - Open `sql/init.sql`, copy everything **after** the `USE` line, paste into the SQL box, and execute.
 4. Repeat for `sql/migrations/add_admin_and_health_notes.sql` – this file has no `USE` line, so you can import it directly via the **Import** tab.
+5. Repeat for `sql/migrations/add_sitter_info.sql` – same process.
 
 **Option B – MySQL CLI via SSH**
 
@@ -123,6 +127,7 @@ This app uses PHP 8.0 features (union return types etc.).
 # Replace dbs12345678, dbuser, dbpass with your IONOS values
 mysql -h localhost -u dbuser -pdbpass dbs12345678 < sql/init_tables_only.sql
 mysql -h localhost -u dbuser -pdbpass dbs12345678 < sql/migrations/add_admin_and_health_notes.sql
+mysql -h localhost -u dbuser -pdbpass dbs12345678 < sql/migrations/add_sitter_info.sql
 ```
 
 > The `CREATE DATABASE` and `USE` lines in `init.sql` are harmless with CLI when you pass the database name as an argument – MySQL ignores the `USE` and the `CREATE DATABASE IF NOT EXISTS` will simply fail silently on permission-denied, which is fine since the database already exists.
@@ -235,20 +240,27 @@ Use it to:
     │   └── session.php           # Session start + auth helpers (isAdminLoggedIn, CSRF)
     ├── includes/
     │   ├── auth_middleware.php   # Redirect guard for admin pages
-    │   ├── pet_model.php         # Data-access functions (pets, vaccinations, health notes)
+    │   ├── pet_model.php         # Data-access functions (pets, vaccinations, health notes, sitter info)
     │   ├── header.php            # Shared HTML header (shows admin bar when logged in)
     │   └── footer.php            # Shared HTML footer
     ├── pages/
-    │   └── pet.php               # Individual pet profile page
+    │   ├── pet.php               # Individual pet profile page
+    │   └── sitter.php            # Public sitter information page
     ├── admin/
     │   ├── index.php             # Admin dashboard – lists all pets
     │   ├── login.php             # Admin login form
     │   ├── logout.php            # Destroys session, redirects to login
     │   ├── health_notes.php      # List + add/edit health notes for a pet
     │   ├── health_note_save.php  # POST: create or update a health note
-    │   └── health_note_delete.php# POST: delete a health note
+    │   ├── health_note_delete.php      # POST: delete a health note
+    │   ├── sitter_info.php             # Manage household info, walk & feeding schedules
+    │   ├── sitter_info_save.php        # POST: save household sitter info
+    │   ├── walk_schedule_save.php      # POST: create or update a walk schedule entry
+    │   ├── walk_schedule_delete.php    # POST: delete a walk schedule entry
+    │   ├── feeding_schedule_save.php   # POST: create or update a feeding schedule entry
+    │   └── feeding_schedule_delete.php # POST: delete a feeding schedule entry
     └── assets/
-        ├── css/style.css         # Main stylesheet (includes admin styles)
+        ├── css/style.css         # Main stylesheet (includes admin and sitter styles)
         └── js/app.js             # Minimal JavaScript
 ```
 
@@ -270,12 +282,23 @@ medical_records
  └── pet_id → pets.id
      record_date, record_type, description, vet_name, notes
 
-admin_users                        ← added by migration
+admin_users                        ← added by add_admin_and_health_notes migration
  └── id, username, password_hash, created_at
 
-health_notes                       ← added by migration
+health_notes                       ← added by add_admin_and_health_notes migration
  └── pet_id → pets.id
      note_date, weight_kg (nullable)
      type: injection | physio | fleaing | vet_visit | medication | other
      notes, created_at, updated_at
+
+sitter_household_info              ← added by add_sitter_info migration
+ └── id (always 1), emergency_contact_name, emergency_contact_phone
+     vet_name, vet_phone, vet_address, general_notes
+
+walk_schedules                     ← added by add_sitter_info migration
+ └── id, label, walk_time, duration_minutes, notes, sort_order
+
+feeding_schedules                  ← added by add_sitter_info migration
+ └── pet_id → pets.id
+     meal_label, feed_time, food_description, notes, sort_order
 ```

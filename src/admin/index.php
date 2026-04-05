@@ -58,6 +58,10 @@ require_once __DIR__ . '/../includes/header.php';
             </div>
         <?php endforeach; ?>
     </div>
+
+    <div style="margin-top:1.5rem">
+        <a href="/admin/sitter_info.php" class="btn btn--secondary">🏠 Manage Sitter Information</a>
+    </div>
 <?php else: ?>
     <p class="empty-state">No pets found.</p>
 <?php endif; ?>

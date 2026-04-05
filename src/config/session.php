@@ -19,6 +19,14 @@ function isAdminLoggedIn(): bool
 }
 
 /**
+ * Returns true if a sitter is currently logged in via their access code.
+ */
+function isSitterLoggedIn(): bool
+{
+    return !empty($_SESSION['sitter_logged_in']) && $_SESSION['sitter_logged_in'] === true;
+}
+
+/**
  * Returns a per-session CSRF token, generating one if it doesn't exist yet.
  */
 function getCsrfToken(): string
