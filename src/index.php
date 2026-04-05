@@ -24,8 +24,7 @@ require_once __DIR__ . '/includes/header.php';
 <?php endif; ?>
 
 <section class="hero">
-    <h1 class="hero-title">Welcome to Noodle's Pet Profiles 🐾</h1>
-    <p class="hero-subtitle">Meet our beloved Shiba Inu family – Jack-Jack &amp; Nagi</p>
+    <h1 class="hero-title">Welcome to Jack-Jack and Nagi's Pet Profiles 🐾</h1>
 </section>
 
 <?php if (!empty($pets)): ?>
