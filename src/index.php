@@ -32,6 +32,7 @@ require_once __DIR__ . '/includes/header.php';
     <section class="pets-grid">
         <?php foreach ($pets as $pet): ?>
             <article class="pet-card">
+                <a href="/pages/pet.php?id=<?= (int)$pet['id'] ?>" class="pet-card__link" aria-label="View <?= htmlspecialchars($pet['name']) ?>'s full profile">
                 <div class="pet-card__image-wrapper">
                     <?php if (!empty($pet['photo_url'])): ?>
                         <img
@@ -45,8 +46,13 @@ require_once __DIR__ . '/includes/header.php';
                     <?php endif; ?>
                     <span class="pet-badge"><?= htmlspecialchars($pet['gender']) ?></span>
                 </div>
+                </a>
                 <div class="pet-card__body">
-                    <h2 class="pet-card__name"><?= htmlspecialchars($pet['name']) ?></h2>
+                    <h2 class="pet-card__name">
+                        <a href="/pages/pet.php?id=<?= (int)$pet['id'] ?>" class="pet-card__name-link">
+                            <?= htmlspecialchars($pet['name']) ?>
+                        </a>
+                    </h2>
                     <p class="pet-card__breed"><?= htmlspecialchars($pet['breed']) ?></p>
                     <ul class="pet-card__meta">
                         <?php if (!empty($pet['birthday'])): ?>

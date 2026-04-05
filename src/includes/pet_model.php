@@ -345,6 +345,82 @@ function formatTime(string $timeStr, string $format = 'g:i A', string $fallback 
 }
 
 /**
+ * Insert or update a pet record.
+ *
+ * @param array{id: ?int, name: string, species: string, breed: string,
+ *              gender: string, birthday: ?string, weight_kg: ?float,
+ *              color: string, description: ?string, personality: ?string,
+ *              favourite_toy: ?string, favourite_food: ?string,
+ *              photo_url: ?string} $data
+ */
+function savePet(array $data): void
+{
+    $pdo = getDbConnection();
+
+    if (!empty($data['id'])) {
+        $stmt = $pdo->prepare(
+            'UPDATE pets
+             SET name = :name, species = :species, breed = :breed,
+                 gender = :gender, birthday = :birthday, weight_kg = :weight_kg,
+                 color = :color, description = :description,
+                 personality = :personality, favourite_toy = :favourite_toy,
+                 favourite_food = :favourite_food, photo_url = :photo_url
+             WHERE id = :id'
+        );
+        $stmt->execute([
+            ':name'          => $data['name'],
+            ':species'       => $data['species'],
+            ':breed'         => $data['breed'],
+            ':gender'        => $data['gender'],
+            ':birthday'      => $data['birthday'] ?: null,
+            ':weight_kg'     => $data['weight_kg'],
+            ':color'         => $data['color'],
+            ':description'   => $data['description'] ?: null,
+            ':personality'   => $data['personality'] ?: null,
+            ':favourite_toy' => $data['favourite_toy'] ?: null,
+            ':favourite_food'=> $data['favourite_food'] ?: null,
+            ':photo_url'     => $data['photo_url'] ?: null,
+            ':id'            => $data['id'],
+        ]);
+    } else {
+        $stmt = $pdo->prepare(
+            'INSERT INTO pets
+                 (name, species, breed, gender, birthday, weight_kg,
+                  color, description, personality, favourite_toy,
+                  favourite_food, photo_url)
+             VALUES
+                 (:name, :species, :breed, :gender, :birthday, :weight_kg,
+                  :color, :description, :personality, :favourite_toy,
+                  :favourite_food, :photo_url)'
+        );
+        $stmt->execute([
+            ':name'          => $data['name'],
+            ':species'       => $data['species'],
+            ':breed'         => $data['breed'],
+            ':gender'        => $data['gender'],
+            ':birthday'      => $data['birthday'] ?: null,
+            ':weight_kg'     => $data['weight_kg'],
+            ':color'         => $data['color'],
+            ':description'   => $data['description'] ?: null,
+            ':personality'   => $data['personality'] ?: null,
+            ':favourite_toy' => $data['favourite_toy'] ?: null,
+            ':favourite_food'=> $data['favourite_food'] ?: null,
+            ':photo_url'     => $data['photo_url'] ?: null,
+        ]);
+    }
+}
+
+/**
+ * Delete a pet and all related records (cascaded via FK constraints).
+ */
+function deletePet(int $id): void
+{
+    $pdo  = getDbConnection();
+    $stmt = $pdo->prepare('DELETE FROM pets WHERE id = :id');
+    $stmt->execute([':id' => $id]);
+}
+
+/**
  * Calculate age in years and months from a birthday date string.
  */
 function calculateAge(string $birthday): string
