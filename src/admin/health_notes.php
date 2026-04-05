@@ -53,8 +53,8 @@ require_once __DIR__ . '/../includes/header.php';
                     <tr>
                         <th>Date</th>
                         <th>Type</th>
-                        <th>Weight (kg)</th>
                         <th>Notes</th>
+                        <th>Weight (kg)</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -67,8 +67,8 @@ require_once __DIR__ . '/../includes/header.php';
                                 <?= htmlspecialchars(ucfirst(str_replace('_', ' ', $n['type']))) ?>
                             </span>
                         </td>
-                        <td><?= !empty($n['weight_kg']) ? htmlspecialchars($n['weight_kg']) . ' kg' : '—' ?></td>
                         <td><?= nl2br(htmlspecialchars($n['notes'])) ?></td>
+                        <td><?= !empty($n['weight_kg']) ? htmlspecialchars($n['weight_kg']) . ' kg' : '—' ?></td>
                         <td class="admin-actions">
                             <a
                                 href="?pet_id=<?= $petId ?>&edit=<?= (int)$n['id'] ?>#note-form"

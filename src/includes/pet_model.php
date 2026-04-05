@@ -90,6 +90,16 @@ function getHealthNoteById(int $id): array|false
 }
 
 /**
+ * Update only the weight_kg field on a pet record.
+ */
+function updatePetWeight(int $petId, float $weightKg): void
+{
+    $pdo  = getDbConnection();
+    $stmt = $pdo->prepare('UPDATE pets SET weight_kg = :weight_kg WHERE id = :id');
+    $stmt->execute([':weight_kg' => $weightKg, ':id' => $petId]);
+}
+
+/**
  * Insert or update a health note.
  *
  * @param array{id: ?int, pet_id: int, note_date: string, weight_kg: ?float, type: string, notes: string} $data
