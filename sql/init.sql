@@ -20,22 +20,35 @@ USE `pet_profiles`;
 
 -- Pets table
 CREATE TABLE IF NOT EXISTS `pets` (
-    `id`          INT UNSIGNED     NOT NULL AUTO_INCREMENT,
-    `name`        VARCHAR(100)     NOT NULL,
-    `species`     VARCHAR(50)      NOT NULL DEFAULT 'Dog',
-    `breed`       VARCHAR(100)     NOT NULL,
-    `gender`      ENUM('Male','Female','Unknown') NOT NULL DEFAULT 'Unknown',
-    `birthday`    DATE             NULL,
-    `weight_kg`   DECIMAL(5,2)     NULL,
-    `color`       VARCHAR(100)     NOT NULL,
-    `description` TEXT             NULL,
-    `personality` TEXT             NULL,
-    `favourite_toy`   VARCHAR(150) NULL,
-    `favourite_food`  VARCHAR(150) NULL,
-    `photo_url`   VARCHAR(500)     NULL,
-    `created_at`  TIMESTAMP        NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at`  TIMESTAMP        NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `id`              INT UNSIGNED     NOT NULL AUTO_INCREMENT,
+    `name`            VARCHAR(100)     NOT NULL,
+    `species`         VARCHAR(50)      NOT NULL DEFAULT 'Dog',
+    `breed`           VARCHAR(100)     NOT NULL,
+    `gender`          ENUM('Male','Female','Unknown') NOT NULL DEFAULT 'Unknown',
+    `birthday`        DATE             NULL,
+    `weight_kg`       DECIMAL(5,2)     NULL,
+    `color`           VARCHAR(100)     NOT NULL,
+    `description`     TEXT             NULL,
+    `personality`     TEXT             NULL,
+    `favourite_toy`   VARCHAR(150)     NULL,
+    `favourite_food`  VARCHAR(150)     NULL,
+    `photo_url`       VARCHAR(500)     NULL,
+    `important_note`  TEXT             NULL,
+    `created_at`      TIMESTAMP        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at`      TIMESTAMP        NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Pet gallery photos table
+CREATE TABLE IF NOT EXISTS `pet_photos` (
+    `id`            INT UNSIGNED  NOT NULL AUTO_INCREMENT,
+    `pet_id`        INT UNSIGNED  NOT NULL,
+    `photo_url`     VARCHAR(500)  NOT NULL,
+    `caption`       VARCHAR(255)  NULL,
+    `display_order` TINYINT UNSIGNED NOT NULL DEFAULT 0,
+    PRIMARY KEY (`id`),
+    CONSTRAINT `fk_pet_photos_pet` FOREIGN KEY (`pet_id`)
+        REFERENCES `pets` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Vaccinations table
@@ -73,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `medical_records` (
 INSERT INTO `pets` (
     `name`, `species`, `breed`, `gender`, `birthday`,
     `weight_kg`, `color`, `description`, `personality`,
-    `favourite_toy`, `favourite_food`, `photo_url`
+    `favourite_toy`, `favourite_food`, `photo_url`, `important_note`
 ) VALUES
 (
     'Jack-Jack',
@@ -87,7 +100,8 @@ INSERT INTO `pets` (
     'Bold, confident, energetic, and fiercely loyal. Jack-Jack loves to play but also appreciates a cosy nap in the sun.',
     'Squeaky tennis ball',
     'Salmon treats',
-    'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=600'
+    '/assets/images/jack-jack.jpg',
+    'Jack-Jack is allergic to beef products. Please do not feed him any beef-based treats or food. He is also reactive to unfamiliar dogs on lead — always greet calmly and give him space.'
 ),
 (
     'Nagi',
@@ -101,7 +115,8 @@ INSERT INTO `pets` (
     'Gentle, curious, sweet-natured, and occasionally mischievous. Nagi has a quiet dignity about her and loves cuddle sessions on the sofa.',
     'Stuffed bunny toy',
     'Chicken strips',
-    'https://images.unsplash.com/photo-1601979031925-424e53b6caaa?w=600'
+    '/assets/images/nagi.jpg',
+    'Nagi is microchipped (chip registered with national database). She is shy around loud noises and sudden movements — please approach slowly and let her come to you at her own pace.'
 );
 
 -- Sample vaccinations for Jack-Jack (pet_id = 1)
@@ -125,3 +140,13 @@ INSERT INTO `medical_records` (`pet_id`, `record_date`, `record_type`, `descript
 INSERT INTO `medical_records` (`pet_id`, `record_date`, `record_type`, `description`, `vet_name`, `notes`) VALUES
 (2, '2023-01-15', 'Check-up',    'Annual wellness exam. Excellent health.', 'Dr. Smith',   'Weight within normal range'),
 (2, '2023-08-05', 'Microchip',   'Microchip implanted for identification.', 'Dr. Johnson', 'Chip number registered with national database');
+
+-- Gallery photos for Jack-Jack (pet_id = 1)
+INSERT INTO `pet_photos` (`pet_id`, `photo_url`, `caption`, `display_order`) VALUES
+(1, '/assets/images/jack-jack-2.jpg', 'Jack-Jack enjoying the park', 1),
+(1, '/assets/images/jack-jack-3.jpg', 'Nap time in the sun',         2);
+
+-- Gallery photos for Nagi (pet_id = 2)
+INSERT INTO `pet_photos` (`pet_id`, `photo_url`, `caption`, `display_order`) VALUES
+(2, '/assets/images/nagi-2.jpg', 'Nagi on her morning walk', 1),
+(2, '/assets/images/nagi-3.jpg', 'Snuggle time on the sofa',  2);

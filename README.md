@@ -16,12 +16,11 @@ A PHP web application for managing pet profiles, built for Jack-Jack and Nagi �
 
 - 🏠 **Homepage** – gallery-style cards for every pet
 - 🐕 **Individual pet profiles** – full details including breed, age, weight, colour, favourite toy & food
-- 💉 **Vaccination history** – per-pet vaccine records
-- 🏥 **Medical records** – visit history with vet notes
-- 🦮 **Sitter Information** – public page with walk schedule, per-pet feeding schedules, emergency contacts and vet info
-- 🔒 **Admin panel** – password-protected login to manage health notes and sitter information per pet
+- ⚠️ **Important Note** – highlighted section for key information (allergies, behaviour notes, microchip info)
+- 📸 **Photo gallery** – additional photos on the full profile page
+- 🔒 **Admin panel** – password-protected login to manage health notes per pet
 - 🩺 **Health notes** – injection, physio, fleaing, vet visit, medication records (admin-only)
-- 📱 **Responsive design** – works on mobile and desktop
+- 📱 **Responsive design** – fully optimised for mobile and desktop
 
 ## Local Development
 
@@ -302,3 +301,18 @@ feeding_schedules                  ← added by add_sitter_info migration
  └── pet_id → pets.id
      meal_label, feed_time, food_description, notes, sort_order
 ```
+
+## Pet Images
+
+Place pet photos in `src/assets/images/` using the following filenames:
+
+| File | Purpose |
+|------|---------|
+| `jack-jack.jpg` | Jack-Jack's main profile photo |
+| `jack-jack-2.jpg` | Jack-Jack gallery photo |
+| `jack-jack-3.jpg` | Jack-Jack gallery photo |
+| `nagi.jpg` | Nagi's main profile photo |
+| `nagi-2.jpg` | Nagi gallery photo |
+| `nagi-3.jpg` | Nagi gallery photo |
+
+Recommended size: **800 × 800 px**, JPEG format.
