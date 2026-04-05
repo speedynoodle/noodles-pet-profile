@@ -28,8 +28,8 @@
                 🐾 Noodle's Pet Profiles
             </a>
             <nav class="site-nav">
-                <a href="/">Home</a>
-                <a href="/pages/sitter.php">Sitter Info</a>
+                <a href="/" <?= (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) === '/') ? 'aria-current="page"' : '' ?>>Home</a>
+                <a href="/pages/sitter.php" <?= (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) === '/pages/sitter.php') ? 'aria-current="page"' : '' ?>>Sitter Info</a>
             </nav>        </div>
     </header>
     <main class="site-main">
