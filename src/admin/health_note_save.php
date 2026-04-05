@@ -59,6 +59,9 @@ try {
         'type'      => $type,
         'notes'     => $notes,
     ]);
+    if ($weightKg !== null) {
+        updatePetWeight($petId, $weightKg);
+    }
 } catch (PDOException $e) {
     // Redirect back on error; the existing data is still intact
 }

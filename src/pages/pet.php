@@ -163,8 +163,8 @@ require_once __DIR__ . '/../includes/header.php';
                             <tr>
                                 <th>Date</th>
                                 <th>Type</th>
-                                <th>Weight (kg)</th>
                                 <th>Notes</th>
+                                <th>Weight (kg)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -176,8 +176,8 @@ require_once __DIR__ . '/../includes/header.php';
                                         <?= htmlspecialchars(ucfirst(str_replace('_', ' ', $hn['type']))) ?>
                                     </span>
                                 </td>
-                                <td><?= !empty($hn['weight_kg']) ? htmlspecialchars($hn['weight_kg']) . ' kg' : '—' ?></td>
                                 <td><?= nl2br(htmlspecialchars($hn['notes'])) ?></td>
+                                <td><?= !empty($hn['weight_kg']) ? htmlspecialchars($hn['weight_kg']) . ' kg' : '—' ?></td>
                             </tr>
                             <?php endforeach; ?>
                         </tbody>
