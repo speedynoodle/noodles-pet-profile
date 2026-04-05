@@ -1,6 +1,6 @@
 # 🐾 Noodles’ Pet Profiles
 
-A PHP web application for managing pet profiles, built for Jack-Jack and Nagi – two beautiful Shiba Inus.
+A PHP web application for managing pet profiles, built for Jack-Jack and Nagi – two beautiful sighthounds.
 
 ## Tech Stack
 
