@@ -5,7 +5,7 @@
 
 require_once __DIR__ . '/includes/pet_model.php';
 
-$pageTitle = "Noodle's Pet Profiles – Jack-Jack & Nagi";
+$pageTitle = "Noodles’ Pet Profiles – Jack-Jack & Nagi";
 
 try {
     $pets = getAllPets();

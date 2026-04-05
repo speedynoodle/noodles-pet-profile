@@ -31,7 +31,7 @@ try {
     $dbError = 'Could not load sitter information. Please ensure the database service is running.';
 }
 
-$pageTitle = "Sitter Information – Noodle's Pet Profiles";
+$pageTitle = "Sitter Information – Noodles’ Pet Profiles";
 require_once __DIR__ . '/../includes/header.php';
 ?>
 

@@ -16,7 +16,7 @@ try {
     $dbError = 'Could not load pets. Please ensure the database service is running.';
 }
 
-$pageTitle = "Admin Dashboard – Noodle's Pet Profiles";
+$pageTitle = "Admin Dashboard – Noodles’ Pet Profiles";
 require_once __DIR__ . '/../includes/header.php';
 ?>
 

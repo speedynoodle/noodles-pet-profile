@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$pageTitle = "Admin Login – Noodle's Pet Profiles";
+$pageTitle = "Admin Login – Noodles’ Pet Profiles";
 require_once __DIR__ . '/../includes/header.php';
 ?>
 

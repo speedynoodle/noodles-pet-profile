@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$pageTitle = "Sitter Access – Noodle's Pet Profiles";
+$pageTitle = "Sitter Access – Noodles’ Pet Profiles";
 require_once __DIR__ . '/../includes/header.php';
 ?>
 

@@ -1,4 +1,4 @@
-/* app.js – minimal JavaScript for Noodle's Pet Profiles */
+/* app.js – minimal JavaScript for Noodles’ Pet Profiles */
 
 // Highlight the current nav link
 document.addEventListener('DOMContentLoaded', () => {

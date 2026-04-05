@@ -28,7 +28,7 @@ if (!isset($dbError) && $pet === false) {
     exit;
 }
 
-$pageTitle = $pet ? htmlspecialchars($pet['name']) . "'s Profile – Noodle's Pet Profiles" : "Pet Profile";
+$pageTitle = $pet ? htmlspecialchars($pet['name']) . "'s Profile – Noodles’ Pet Profiles" : "Pet Profile";
 
 require_once __DIR__ . '/../includes/header.php';
 ?>
