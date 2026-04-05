@@ -61,15 +61,15 @@ require_once __DIR__ . '/../includes/header.php';
                 <tbody>
                     <?php foreach ($notes as $n): ?>
                     <tr <?= ($editNote && (int)$editNote['id'] === (int)$n['id']) ? 'class="row-editing"' : '' ?>>
-                        <td><?= htmlspecialchars(date('d M Y', strtotime($n['note_date']))) ?></td>
-                        <td>
+                        <td data-label="Date"><?= htmlspecialchars(date('d M Y', strtotime($n['note_date']))) ?></td>
+                        <td data-label="Type">
                             <span class="record-badge">
                                 <?= htmlspecialchars(ucfirst(str_replace('_', ' ', $n['type']))) ?>
                             </span>
                         </td>
-                        <td><?= nl2br(htmlspecialchars($n['notes'])) ?></td>
-                        <td><?= !empty($n['weight_kg']) ? htmlspecialchars($n['weight_kg']) . ' kg' : '—' ?></td>
-                        <td class="admin-actions">
+                        <td data-label="Notes"><?= nl2br(htmlspecialchars($n['notes'])) ?></td>
+                        <td data-label="Weight"><?= !empty($n['weight_kg']) ? htmlspecialchars($n['weight_kg']) . ' kg' : '—' ?></td>
+                        <td data-label="Actions" class="admin-actions">
                             <a
                                 href="?pet_id=<?= $petId ?>&edit=<?= (int)$n['id'] ?>#note-form"
                                 class="btn btn--sm btn--secondary"

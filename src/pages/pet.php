@@ -170,14 +170,14 @@ require_once __DIR__ . '/../includes/header.php';
                         <tbody>
                             <?php foreach ($healthNotes as $hn): ?>
                             <tr>
-                                <td><?= htmlspecialchars(date('d M Y', strtotime($hn['note_date']))) ?></td>
-                                <td>
+                                <td data-label="Date"><?= htmlspecialchars(date('d M Y', strtotime($hn['note_date']))) ?></td>
+                                <td data-label="Type">
                                     <span class="record-badge">
                                         <?= htmlspecialchars(ucfirst(str_replace('_', ' ', $hn['type']))) ?>
                                     </span>
                                 </td>
-                                <td><?= nl2br(htmlspecialchars($hn['notes'])) ?></td>
-                                <td><?= !empty($hn['weight_kg']) ? htmlspecialchars($hn['weight_kg']) . ' kg' : '—' ?></td>
+                                <td data-label="Notes"><?= nl2br(htmlspecialchars($hn['notes'])) ?></td>
+                                <td data-label="Weight"><?= !empty($hn['weight_kg']) ? htmlspecialchars($hn['weight_kg']) . ' kg' : '—' ?></td>
                             </tr>
                             <?php endforeach; ?>
                         </tbody>
