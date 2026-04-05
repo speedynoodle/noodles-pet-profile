@@ -37,6 +37,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $user = $stmt->fetch();
 
                 if ($user && password_verify($password, $user['password_hash'])) {
+                    if (password_needs_rehash($user['password_hash'], PASSWORD_BCRYPT, ['cost' => 12])) {
+                        try {
+                            $newHash = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
+                            $upd = $pdo->prepare('UPDATE admin_users SET password_hash = :hash WHERE id = :id');
+                            $upd->execute([':hash' => $newHash, ':id' => $user['id']]);
+                        } catch (PDOException $rehashEx) {
+                            // Rehash failed; log silently – login still proceeds
+                            error_log('Admin password rehash failed: ' . $rehashEx->getMessage());
+                        }
+                    }
                     session_regenerate_id(true);
                     $_SESSION['admin_logged_in'] = true;
                     $_SESSION['admin_username']  = $user['username'];

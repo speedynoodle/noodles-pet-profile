@@ -32,6 +32,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (!$householdInfo || empty($householdInfo['sitter_access_code_hash'])) {
                     $error = 'No access code has been set. Please contact the owner.';
                 } elseif (password_verify($code, $householdInfo['sitter_access_code_hash'])) {
+                    if (password_needs_rehash($householdInfo['sitter_access_code_hash'], PASSWORD_BCRYPT, ['cost' => 12])) {
+                        try {
+                            saveSitterAccessCode(password_hash($code, PASSWORD_BCRYPT, ['cost' => 12]));
+                        } catch (PDOException $rehashEx) {
+                            // Rehash failed; log silently – login still proceeds
+                            error_log('Sitter code rehash failed: ' . $rehashEx->getMessage());
+                        }
+                    }
                     session_regenerate_id(true);
                     $_SESSION['sitter_logged_in'] = true;
                     header('Location: /pages/sitter.php');
