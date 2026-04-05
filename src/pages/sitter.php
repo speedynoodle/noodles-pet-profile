@@ -107,7 +107,7 @@ require_once __DIR__ . '/../includes/header.php';
         <p class="sitter-section__intro">The following walk schedule applies to <strong>all pets</strong> in the household.</p>
 
         <?php if (!empty($walkSchedules)): ?>
-            <div class="sitter-grid sitter-grid--walks">
+            <div class="sitter-grid sitter-grid--schedule">
                 <?php foreach ($walkSchedules as $walk): ?>
                 <div class="sitter-walk-card">
                     <div class="sitter-walk-card__label"><?= htmlspecialchars($walk['label']) ?></div>
@@ -159,7 +159,7 @@ require_once __DIR__ . '/../includes/header.php';
         <!-- Feeding Schedule -->
         <h3 class="sitter-subsection__heading">🍽 Feeding Schedule</h3>
         <?php if (!empty($petFeeding)): ?>
-            <div class="sitter-grid sitter-grid--walks">
+            <div class="sitter-grid sitter-grid--schedule">
                 <?php foreach ($petFeeding as $meal): ?>
                 <div class="sitter-walk-card">
                     <div class="sitter-walk-card__label"><?= htmlspecialchars($meal['meal_label']) ?></div>
@@ -181,12 +181,6 @@ require_once __DIR__ . '/../includes/header.php';
             <p class="empty-state-small">No feeding schedule set up for <?= htmlspecialchars($pet['name']) ?>.</p>
         <?php endif; ?>
 
-        <!-- Personality / sitter notes -->
-        <?php if (!empty($pet['personality'])): ?>
-        <h3 class="sitter-subsection__heading">💬 Personality &amp; Tips</h3>
-        <p class="sitter-pet-notes"><?= nl2br(htmlspecialchars($pet['personality'])) ?></p>
-        <?php endif; ?>
-
     </section>
     <?php endforeach; ?>
 
@@ -194,7 +188,25 @@ require_once __DIR__ . '/../includes/header.php';
     <?php if ($householdInfo && !empty($householdInfo['general_notes'])): ?>
     <section class="sitter-section">
         <h2 class="sitter-section__heading">📋 General Notes</h2>
-        <p class="sitter-general-notes"><?= nl2br(htmlspecialchars($householdInfo['general_notes'])) ?></p>
+        <?php
+            $lines = explode("\n", $householdInfo['general_notes']);
+            $output = '';
+            $inList = false;
+            foreach ($lines as $line) {
+                $trimmed = trim($line);
+                if (preg_match('/^[-*]\s+(.+)/', $trimmed, $m)) {
+                    if (!$inList) { $output .= '<ul class="sitter-notes-list">'; $inList = true; }
+                    $output .= '<li>' . htmlspecialchars(trim($m[1])) . '</li>';
+                } else {
+                    if ($inList) { $output .= '</ul>'; $inList = false; }
+                    if ($trimmed !== '') {
+                        $output .= '<p class="sitter-general-notes">' . nl2br(htmlspecialchars($trimmed)) . '</p>';
+                    }
+                }
+            }
+            if ($inList) { $output .= '</ul>'; }
+            echo $output;
+        ?>
     </section>
     <?php endif; ?>
 

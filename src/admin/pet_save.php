@@ -43,7 +43,6 @@ $weightKg  = ($rawWeight !== '')
     : null;
 
 $description   = trim($_POST['description']   ?? '');
-$personality   = trim($_POST['personality']   ?? '');
 $favouriteToy  = trim($_POST['favourite_toy'] ?? '');
 $favouriteFood = trim($_POST['favourite_food'] ?? '');
 $photoUrl      = trim($_POST['photo_url']     ?? '');
@@ -51,6 +50,15 @@ $photoUrl      = trim($_POST['photo_url']     ?? '');
 // Required fields validation
 if ($name === '' || $species === '' || $breed === '' || $color === ''
     || ($weightKg === false && $rawWeight !== '')) {
+    $redirect = $id ? '/admin/pet_edit.php?id=' . (int)$id : '/admin/pet_edit.php';
+    header('Location: ' . $redirect);
+    exit;
+}
+
+// Photo URL must be a valid absolute URL or a relative path starting with / (no traversal)
+if ($photoUrl !== ''
+    && !filter_var($photoUrl, FILTER_VALIDATE_URL)
+    && (!preg_match('#^/#', $photoUrl) || strpos($photoUrl, '..') !== false)) {
     $redirect = $id ? '/admin/pet_edit.php?id=' . (int)$id : '/admin/pet_edit.php';
     header('Location: ' . $redirect);
     exit;
@@ -67,7 +75,6 @@ try {
         'weight_kg'     => $weightKg,
         'color'         => $color,
         'description'   => $description,
-        'personality'   => $personality,
         'favourite_toy' => $favouriteToy,
         'favourite_food'=> $favouriteFood,
         'photo_url'     => $photoUrl,

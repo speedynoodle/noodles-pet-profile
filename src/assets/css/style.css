@@ -646,6 +646,10 @@ a:hover { text-decoration: underline; }
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
 }
 
+.sitter-grid--schedule {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+}
+
 /* ----- Contact Cards ----- */
 .sitter-card {
     background: var(--color-surface);
@@ -719,42 +723,42 @@ a:hover { text-decoration: underline; }
     background: var(--color-bg);
     border: 1.5px solid var(--color-border);
     border-radius: var(--radius-md);
-    padding: 1.1rem 1.2rem;
+    padding: 1.4rem 1.6rem;
     display: flex;
     flex-direction: column;
-    gap: .3rem;
+    gap: .4rem;
 }
 
 .sitter-walk-card__label {
     font-weight: 800;
-    font-size: .95rem;
+    font-size: 1rem;
     color: var(--color-text);
 }
 
 .sitter-walk-card__time {
-    font-size: 1.45rem;
+    font-size: 1.75rem;
     font-weight: 800;
     color: var(--color-primary);
     line-height: 1.1;
 }
 
 .sitter-walk-card__duration {
-    font-size: .85rem;
+    font-size: .9rem;
     color: var(--color-text-muted);
     font-weight: 600;
 }
 
 .sitter-walk-card__food {
-    font-size: .92rem;
+    font-size: 1rem;
     font-weight: 700;
     color: var(--color-text);
 }
 
 .sitter-walk-card__notes {
-    font-size: .85rem;
+    font-size: .9rem;
     color: var(--color-text-muted);
-    margin-top: .2rem;
-    line-height: 1.5;
+    margin-top: .3rem;
+    line-height: 1.55;
 }
 
 /* ----- Per-pet header inside section ----- */
@@ -816,10 +820,20 @@ a:hover { text-decoration: underline; }
     padding: .85rem 1rem;
 }
 
+.sitter-notes-list {
+    margin: .5rem 0 0 1.25rem;
+    padding: 0;
+    list-style: disc;
+    font-size: .92rem;
+    color: var(--color-text);
+    line-height: 1.75;
+}
+
 /* ----- Responsive sitter ----- */
 @media (max-width: 600px) {
     .sitter-grid--2,
-    .sitter-grid--walks {
+    .sitter-grid--walks,
+    .sitter-grid--schedule {
         grid-template-columns: 1fr;
     }
 }

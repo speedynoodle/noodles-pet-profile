@@ -117,13 +117,6 @@ require_once __DIR__ . '/../includes/header.php';
             </section>
             <?php endif; ?>
 
-            <?php if (!empty($pet['personality'])): ?>
-            <section class="profile-section">
-                <h2 class="section-heading">Personality</h2>
-                <p><?= nl2br(htmlspecialchars($pet['personality'])) ?></p>
-            </section>
-            <?php endif; ?>
-
             <!-- Important Note -->
             <?php if (!empty($pet['important_note'])): ?>
             <section class="profile-section profile-section--important">

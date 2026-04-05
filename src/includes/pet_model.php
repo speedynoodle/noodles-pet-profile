@@ -362,7 +362,7 @@ function formatTime(string $timeStr, string $format = 'g:i A', string $fallback 
  *
  * @param array{id: ?int, name: string, species: string, breed: string,
  *              gender: string, birthday: ?string, weight_kg: ?float,
- *              color: string, description: ?string, personality: ?string,
+ *              color: string, description: ?string,
  *              favourite_toy: ?string, favourite_food: ?string,
  *              photo_url: ?string} $data
  */
@@ -376,7 +376,7 @@ function savePet(array $data): void
              SET name = :name, species = :species, breed = :breed,
                  gender = :gender, birthday = :birthday, weight_kg = :weight_kg,
                  color = :color, description = :description,
-                 personality = :personality, favourite_toy = :favourite_toy,
+                 favourite_toy = :favourite_toy,
                  favourite_food = :favourite_food, photo_url = :photo_url
              WHERE id = :id'
         );
@@ -389,7 +389,6 @@ function savePet(array $data): void
             ':weight_kg'     => $data['weight_kg'],
             ':color'         => $data['color'],
             ':description'   => $data['description'] ?: null,
-            ':personality'   => $data['personality'] ?: null,
             ':favourite_toy' => $data['favourite_toy'] ?: null,
             ':favourite_food'=> $data['favourite_food'] ?: null,
             ':photo_url'     => $data['photo_url'] ?: null,
@@ -399,11 +398,11 @@ function savePet(array $data): void
         $stmt = $pdo->prepare(
             'INSERT INTO pets
                  (name, species, breed, gender, birthday, weight_kg,
-                  color, description, personality, favourite_toy,
+                  color, description, favourite_toy,
                   favourite_food, photo_url)
              VALUES
                  (:name, :species, :breed, :gender, :birthday, :weight_kg,
-                  :color, :description, :personality, :favourite_toy,
+                  :color, :description, :favourite_toy,
                   :favourite_food, :photo_url)'
         );
         $stmt->execute([
@@ -415,7 +414,6 @@ function savePet(array $data): void
             ':weight_kg'     => $data['weight_kg'],
             ':color'         => $data['color'],
             ':description'   => $data['description'] ?: null,
-            ':personality'   => $data['personality'] ?: null,
             ':favourite_toy' => $data['favourite_toy'] ?: null,
             ':favourite_food'=> $data['favourite_food'] ?: null,
             ':photo_url'     => $data['photo_url'] ?: null,

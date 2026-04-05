@@ -205,8 +205,8 @@ require_once __DIR__ . '/../includes/header.php';
                 id="general_notes"
                 name="general_notes"
                 class="form-input form-textarea"
-                rows="4"
-                placeholder="House rules, gate latching reminders, etc."
+                rows="6"
+                placeholder="House rules, gate latching reminders, etc.&#10;&#10;Start lines with - or * to create bullet points, e.g.:&#10;- Lock the back gate after walks&#10;- Wifi password is on the fridge"
             ><?= htmlspecialchars($householdInfo['general_notes'] ?? '') ?></textarea>
         </div>
 
