@@ -31,6 +31,8 @@ $errors = [];
 
 if ($newCode === '') {
     $errors[] = 'Access code cannot be empty.';
+} elseif (strlen($newCode) < 8) {
+    $errors[] = 'Access code must be at least 8 characters.';
 } elseif ($newCode !== $confirmCode) {
     $errors[] = 'The codes do not match. Please try again.';
 }
@@ -41,7 +43,7 @@ if (!empty($errors)) {
     exit;
 }
 
-$hash = password_hash($newCode, PASSWORD_BCRYPT);
+$hash = password_hash($newCode, PASSWORD_BCRYPT, ['cost' => 12]);
 saveSitterAccessCode($hash);
 
 header('Location: /admin/sitter_info.php?code_saved=1');
