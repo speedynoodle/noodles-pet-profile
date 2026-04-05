@@ -517,10 +517,56 @@ a:hover { text-decoration: underline; }
         grid-template-columns: 1fr;
     }
 
-    .data-table {
+    /* Card layout for data tables on mobile */
+    .data-table thead {
+        display: none;
+    }
+
+    .data-table,
+    .data-table tbody,
+    .data-table tr,
+    .data-table td {
         display: block;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
+        width: 100%;
+    }
+
+    .data-table tr {
+        border: 1.5px solid var(--color-border);
+        border-radius: var(--radius-md);
+        margin-bottom: .85rem;
+        padding: .25rem .5rem;
+        overflow: hidden;
+    }
+
+    .data-table tr:last-child {
+        margin-bottom: 0;
+    }
+
+    .data-table td {
+        display: flex;
+        align-items: flex-start;
+        gap: .5rem;
+        padding: .5rem .25rem;
+        border-bottom: 1px solid var(--color-border);
+        vertical-align: top;
+    }
+
+    .data-table td:last-child {
+        border-bottom: none;
+    }
+
+    .data-table td::before {
+        content: attr(data-label);
+        font-weight: 700;
+        font-size: .78rem;
+        color: var(--color-text-muted);
+        min-width: 70px;
+        flex-shrink: 0;
+        padding-top: .1rem;
+    }
+
+    .data-table tr:hover td {
+        background: none;
     }
 
     .profile-sidebar {
@@ -1128,6 +1174,35 @@ a:hover { text-decoration: underline; }
 
     .admin-login-card {
         padding: 1.5rem 1.25rem;
+    }
+
+    /* Tighten admin section padding */
+    .admin-section {
+        padding: 1rem .9rem;
+    }
+
+    /* Scale down page title */
+    .admin-page-title {
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+    }
+
+    /* Stack action buttons vertically for easier tapping */
+    .admin-actions {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: .3rem;
+    }
+
+    /* Larger touch targets for small buttons */
+    .btn--sm {
+        padding: .5rem .9rem;
+    }
+
+    /* Prevent iOS auto-zoom on input focus (requires font-size >= 16px / 1rem) */
+    .form-input {
+        font-size: 1rem;
+        padding: .6rem .75rem;
     }
 }
 
