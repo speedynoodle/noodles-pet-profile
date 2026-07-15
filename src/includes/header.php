@@ -34,3 +34,25 @@
     </header>
     <main class="site-main">
         <div class="container">
+
+    <!-- Toiletry Modal -->
+    <div id="toiletry-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Log <span id="modal-log-type">Pee</span> for <span id="modal-pet-name">Buddy</span></h2>
+                <button class="modal-close-btn" id="modal-close-btn">✕</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-question">Was this an accident?</p>
+                <div class="modal-checkbox-group">
+                    <input type="checkbox" id="modal-is-accident" />
+                    <label for="modal-is-accident">Mark as accident</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn--cancel" id="modal-cancel-btn">Cancel</button>
+                <button class="modal-btn modal-btn--confirm" onclick="submitToiletryLog()">Log Now</button>
+            </div>
+        </div>
+    </div>
+

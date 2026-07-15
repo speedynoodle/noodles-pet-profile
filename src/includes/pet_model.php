@@ -459,3 +459,109 @@ function calculateAge(string $birthday): string
     }
     return $parts ? implode(', ', $parts) : 'Less than a month';
 }
+
+// -------------------------------------------------------
+// Toiletry Logging
+// -------------------------------------------------------
+
+/**
+ * Fetch all toiletry logs for a pet, ordered by logged_at descending (most recent first).
+ */
+function getToiletryLogsByPetId(int $petId, int $limit = 50): array
+{
+    $pdo  = getDbConnection();
+    $stmt = $pdo->prepare(
+        'SELECT * FROM toiletry_logs WHERE pet_id = :pet_id ORDER BY logged_at DESC LIMIT :limit'
+    );
+    $stmt->execute([':pet_id' => $petId, ':limit' => $limit]);
+    return $stmt->fetchAll();
+}
+
+/**
+ * Create a new toiletry log entry.
+ * 
+ * @param array{pet_id: int, log_type: string, is_accident: bool, logged_at: string} $data
+ */
+function saveToiletryLog(array $data): void
+{
+    $pdo  = getDbConnection();
+    $stmt = $pdo->prepare(
+        'INSERT INTO toiletry_logs (pet_id, log_type, is_accident, logged_at)
+         VALUES (:pet_id, :log_type, :is_accident, :logged_at)'
+    );
+    $stmt->execute([
+        ':pet_id'     => $data['pet_id'],
+        ':log_type'   => $data['log_type'],
+        ':is_accident'=> (int)$data['is_accident'],
+        ':logged_at'  => $data['logged_at'],
+    ]);
+}
+
+/**
+ * Delete a toiletry log entry by id.
+ */
+function deleteToiletryLog(int $id): void
+{
+    $pdo  = getDbConnection();
+    $stmt = $pdo->prepare('DELETE FROM toiletry_logs WHERE id = :id');
+    $stmt->execute([':id' => $id]);
+}
+
+/**
+ * Format a datetime to NZ timezone (NZDT or NZST).
+ * Returns a human-readable format for display.
+ */
+function formatDateTimeNZ(string $datetime, string $format = 'd M Y, g:i A'): string
+{
+    try {
+        $dt = new DateTime($datetime, new DateTimeZone('UTC'));
+        $dt->setTimezone(new DateTimeZone('Pacific/Auckland'));
+        return $dt->format($format);
+    } catch (Exception $e) {
+        return '—';
+    }
+}
+
+/**
+ * Get current datetime in NZ timezone in MySQL format (YYYY-MM-DD HH:MM:SS).
+ */
+function getCurrentTimeNZ(): string
+{
+    $dt = new DateTime('now', new DateTimeZone('Pacific/Auckland'));
+    return $dt->format('Y-m-d H:i:s');
+}
+
+/**
+ * Fetch a single pet by its toiletry access token.
+ */
+function getPetByToiletryToken(string $token): array|false
+{
+    $pdo  = getDbConnection();
+    $stmt = $pdo->prepare('SELECT * FROM pets WHERE toiletry_access_token = :token LIMIT 1');
+    $stmt->execute([':token' => $token]);
+    return $stmt->fetch();
+}
+
+/**
+ * Generate a new UUID v4 for toiletry access token.
+ */
+function generateToiletryToken(): string
+{
+    // Generate a UUID v4
+    $data = openssl_random_bytes(16);
+    $data[6] = chr(ord($data[6]) & 0x0f | 0x40);
+    $data[8] = chr(ord($data[8]) & 0x3f | 0x80);
+    return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
+}
+
+/**
+ * Regenerate the toiletry access token for a pet.
+ */
+function regenerateToiletryToken(int $petId): string
+{
+    $pdo = getDbConnection();
+    $newToken = generateToiletryToken();
+    $stmt = $pdo->prepare('UPDATE pets SET toiletry_access_token = :token WHERE id = :id');
+    $stmt->execute([':token' => $newToken, ':id' => $petId]);
+    return $newToken;
+}

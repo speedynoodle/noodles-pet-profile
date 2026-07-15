@@ -101,9 +101,18 @@ require_once __DIR__ . '/../includes/header.php';
                             <th>Fav Food</th>
                             <td><?= htmlspecialchars($pet['favourite_food']) ?></td>
                         </tr>
-                        <?php endif; ?>
                     </tbody>
                 </table>
+            </div>
+
+                <!-- Link to Toiletry Log Page (Admin Only) -->
+                <?php if (isAdminLoggedIn()): ?>
+                <div class="toiletry-logs-section">
+                    <a href="/pages/toiletry.php?token=<?= urlencode($pet['toiletry_access_token'] ?? '') ?>" class="btn btn--primary">
+                        🚽 View/Manage Toiletry Log
+                    </a>
+                </div>
+                <?php endif; ?>
             </div>
         </aside>
 
